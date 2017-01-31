@@ -9,6 +9,9 @@ var http = require('http');
 var fs = require('fs');
 var port = 3027;
 
+var imageNames = ['ace.jpg', 'bubble.jpg', 'chess.jpg', 'fern.jpg', 'mobile.jpg'];
+var stylesheet = fs.readFileSync('gallery.css');
+
 function serveImage(filename, req, res) {
 	fs.readFile('images/' + filename, function(err,body) {
 		if (err) {
@@ -24,8 +27,24 @@ function serveImage(filename, req, res) {
 }
 
 var server = http.createServer(function(req, res){
-	
+
 	switch (req.url) {
+		case '/gallery':
+			var gHtml = imageNames.map(function(fileName) {
+				return '<img src="' + fileName + '"alt="a fishing ace at work">';
+			}).join('');
+			var html = '<!doctype html>';
+			    html += '<head>';
+					html += 	'<title>Gallery</title>';
+					html += 	'<link href="gallery.css" rel="stylesheet" type="text/css"';
+					html += '</head>';
+					html += '<body>';
+					html += 	'<h1>Gallery</h1>';
+					html += gHtml;
+					html += '</body>';
+			res.setHeader('Content-Type', 'text/html');
+			res.end(html);
+			break;
 		case "/chess":
 		case "/chess/":
 		case "/chess.jpg":
@@ -55,6 +74,10 @@ var server = http.createServer(function(req, res){
 		case "/mobile.jpg":
 		case "/mobile.jpeg":
 			serveImage('mobile.jpg', req, res);
+			break;
+		case '/gallery.css':
+			res.setHeader('Content-Type', 'text/css');
+			res.end(stylesheet);
 			break;
 		default:
 			res.statusCode = 404;
