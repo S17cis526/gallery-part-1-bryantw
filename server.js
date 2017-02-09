@@ -40,7 +40,7 @@ function buildGallery(imageTags) {
 			html += 	'<link href="gallery.css" rel="stylesheet" type="text/css"';
 			html += '</head>';
 			html += '<body>';
-			html += 	'<h1>Gallery</h1>';
+			html += 	'<h1>' + config.title + '</h1>';
 			html += 	'<form>';
 			html += 		'<input type="text" name="title">';
 			html += 		'<input type="submit" value="Change Gallery Title">';
@@ -113,7 +113,7 @@ function serveImage(filename, req, res) {
 
 var server = http.createServer(function(req, res){
 
-	var urlParts url.parse(req.url)
+	var urlParts = url.parse(req.url)
 
 	if(urlParts.query) {
 		var matches = /title=(.+)($|&)/.exec(urlParts.query);
